@@ -27,12 +27,12 @@ public class Demo {
 	private static void startTimer(Scanner input) {
 		Timer time = new Timer(); 
 		
-		System.out.println("Set interval of sending e-mails in seconds");
+		System.out.println(" Set interval of sending emails in seconds");
 		final int seconds = input.nextInt();
 		Session session = Session.getDefaultInstance(getProperties());	
 		MessageThread ms = new MessageThread(from, password, to, session, subject, text);
 		time.schedule(ms, 0, (seconds*1000));
-		System.out.println(" Wait a second for program to start...!!!");
+		System.out.println(" Please wait a few seconds for the program to begin...!!!");
 	}
 
 	private static Properties getProperties() {
@@ -58,7 +58,7 @@ public class Demo {
 		   if(validateEmail(from) == true && password != null)
 			  break;
 		   else 
-			  System.out.println("Incorect email or password! \n");
+			  System.out.println(" Incorrect email or password, please try again! \n");
 		}
 	}
 	
@@ -70,7 +70,7 @@ public class Demo {
 		   if(validateEmail(to) == true)
 			  break;
 		   else 
-		     System.out.println("Incorect email! ");
+		     System.out.println(" Incorrect email, please try again! ");
 		}
 	}
 	

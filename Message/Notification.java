@@ -71,6 +71,6 @@ public class Notification {
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-	  return "Computer name: " + IP.getHostName() + "\t   IP: " + IP.getHostAddress();		
+	  return "    Computer name: " + IP.getHostName() + "\t     IP: " + IP.getHostAddress();		
 	}
 }
