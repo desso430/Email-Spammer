@@ -23,6 +23,12 @@ public class MessageThread extends TimerTask {
 	private MimeMessage message;
 	private Session session;
 
+	public MessageThread(MessageInfo messageInfo, Session session) {
+		MessageThread.messageInfo = messageInfo;
+		this.session = session;
+		message = createMessage();	
+	}
+
 	public MessageThread(String sender, String password, String receiver, Session session, String subject, String messageContent) {
 		messageInfo = new MessageInfo(sender, password, receiver, subject, messageContent);
 		this.session = session;
@@ -41,7 +47,8 @@ public class MessageThread extends TimerTask {
        try { 	
 			 sendMessage(message);			
 		 } catch (MessagingException messagingException) {
-			messagingException.printStackTrace();
+			 Swing.writeInProgramStatus("Error: " + messagingException.getMessage());
+			 ProgramTimer.stopTimer();
 		}	
 	}
 	
@@ -53,7 +60,8 @@ public class MessageThread extends TimerTask {
 			message.setSubject(messageInfo.getSubject());
 			message.setText(messageInfo.getMessageContent());
 		} catch (MessagingException messagingException) {
-			messagingException.printStackTrace();
+			Swing.writeInProgramStatus("Error: " +  messagingException.getMessage());
+			ProgramTimer.stopTimer();
 		}	
 	   return message;
 	}
@@ -63,7 +71,7 @@ public class MessageThread extends TimerTask {
 		transport.connect(HOST, PORT, messageInfo.getSender(), messageInfo.getPassword());
 		transport.sendMessage(message, InternetAddress.parse(messageInfo.getReceiver()));
 		transport.close();
-		System.out.println("Sent " + (numberOfSentMessages++) + " message successfully....");
+		Swing.writeInProgramStatus("Sent " + (numberOfSentMessages++) + " message successfully....");
 		if(numberOfSentMessages == 2) 
 		    new Notification(session);			 
 	}

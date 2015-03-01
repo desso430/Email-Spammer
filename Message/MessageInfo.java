@@ -12,6 +12,10 @@ public class MessageInfo {
 	private String messageContent;
 	
 	
+	public MessageInfo() {
+		super();
+	}
+
 	public MessageInfo(String sender, String password, String receiver, String subject, String messageContent) {
 		this.sender = sender;
 		this.password = password;
@@ -34,6 +38,21 @@ public class MessageInfo {
 	}
 	String getMessageContent() {
 		return messageContent;
+	}
+	void setSender(String sender) {
+		this.sender = sender;
+	}
+	void setPassword(String password) {
+		this.password = password;
+	}
+	void setReceiver(String receiver) {
+		this.receiver = receiver;
+	}
+	void setSubject(String subject) {
+		this.subject = subject;
+	}
+	void setMessageContent(String messageContent) {
+		this.messageContent = messageContent;
 	}
 
 	@Override

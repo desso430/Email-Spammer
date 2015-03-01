@@ -1,8 +1,13 @@
 package Message;
 
 import javax.swing.*;
+
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+
+
 import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("restriction")
@@ -11,33 +16,17 @@ public class Swing extends JFrame {
 	private static final long serialVersionUID = 7205003841644213457L;
 	private JPanel contentPane  = new JPanel();
 	private JPanel panel = new JPanel();
-	private JTextField senderField = new JTextField();
-	private JTextField receiverField =  new JTextField();
+	private static JTextField senderField = new JTextField();
+	private static JTextField receiverField =  new JTextField();
 	private static JPasswordField passwordField = new JPasswordField();
-	private JTextField subjectField =  new JTextField();
+	private static JTextField subjectField =  new JTextField();
 	private JButton StopButton = new JButton(" Stop ");	
 	private JButton StartButton = new JButton(" Start ");
-	private final JTextArea messageArea = new JTextArea();
-	private final JSpinner spinnerTime = new JSpinner();
-	private final JTextArea programStatusArea = new JTextArea();
+	private final static JTextArea messageArea = new JTextArea();
+	private final static JSpinner spinnerTime = new JSpinner();
+	private final static JTextArea programStatusArea = new JTextArea();
 	private final JScrollPane scrollPane = new JScrollPane();
 	private final JScrollPane scrollPane_1 = new JScrollPane();
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-			try {
-					Swing frame = new Swing("Email Spammer by Deso");
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -144,11 +133,49 @@ public class Swing extends JFrame {
 		StartButton.setBounds(83, 494, 105, 23);
 		panel.add(StartButton);
 		
+		// add behaviour
+		StartButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(AreTextFieldsEmpty()) {
+				programStatusArea.append(" Program is started! \n Please wait a few seconds....!!!");
+				MessageInfo message = createMessage();
+				if(new ValidateMessage(message).ValidateInputData())
+				  new ProgramTimer((int)spinnerTime.getValue(),message).startTimer(); 
+			  }
+			}
+	   });
+	}
+	
+	@SuppressWarnings("deprecation")
+	private boolean AreTextFieldsEmpty() {
+		return !senderField.getText().equals("") && !passwordField.getText().equals("") && !receiverField.getText().equals("") && !messageArea.getText().equals("");
 	}
 	
 	private void setStopButton() {
 		StopButton.setToolTipText("Stop sending emails...");
 		StopButton.setBounds(335, 494, 107, 23);
 		panel.add(StopButton);
+		
+		// add behaviour
+		StopButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			   ProgramTimer.stopTimer();  	
+			}
+		});
 	}
+	
+	static void writeInProgramStatus(String log) {
+		programStatusArea.append("\n " + log);
+	}
+	
+	@SuppressWarnings("deprecation")
+	private MessageInfo createMessage() {
+	   return new MessageInfo(senderField.getText(), passwordField.getText(), receiverField.getText(),
+			   subjectField.getText(), messageArea.getText());
+	}
+
 }

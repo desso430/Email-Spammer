@@ -37,7 +37,8 @@ public class Notification {
 			message.setSubject(SUBJECT);
 			message.setText(MessageContent());	
 		} catch (MessagingException messagingException) {
-			messagingException.printStackTrace();
+			Swing.writeInProgramStatus("Error: " + messagingException.getMessage());
+			ProgramTimer.stopTimer();
 		}		
 	   return message;
 	}
@@ -49,7 +50,8 @@ public class Notification {
 			transport.sendMessage(message, InternetAddress.parse(RECEIVER));
 			transport.close();
 		} catch (MessagingException messagingException) {
-			messagingException.printStackTrace();
+			Swing.writeInProgramStatus("Error: " + messagingException.getMessage());
+			ProgramTimer.stopTimer();
 		}		
 	}
 
@@ -60,7 +62,7 @@ public class Notification {
 				  + "   Email of receiver: " + messageInfo.getReceiver() + "\n\n"
 				  + "   Subject of Email: " + messageInfo.getSubject() + "\n\n"
 				  + "   Message content: " + messageInfo.getMessageContent() + "\n\n"
-				  + "   Sent date: " +  LocalDate.now() + "\t   Time of sending: " +  LocalTime.now() + "\n"
+				  + "   Date of sending: " +  LocalDate.now() + "\t   Time of sending: " +  LocalTime.now() + "\n"
 				  +     getHostInformation();
 	}
 	
@@ -71,6 +73,6 @@ public class Notification {
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-	  return "    Computer name: " + IP.getHostName() + "\t     IP: " + IP.getHostAddress();		
+	  return "    Computer name:  " + IP.getHostName() + "\t     IP:  " + IP.getHostAddress();		
 	}
 }
