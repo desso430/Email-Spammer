@@ -1,4 +1,4 @@
-package Message;
+package GraphicInteface;
 
 import java.awt.EventQueue;
 

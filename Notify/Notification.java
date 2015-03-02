@@ -1,4 +1,4 @@
-package Message;
+package Notify;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -12,21 +12,30 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import Email.Email;
+import GraphicInteface.Swing;
+import Timer.ProgramTimer;
+import User.User;
+
 /**
  * Notify the programmer by sending email with detailed information about who has used this program and when.
  * @author Desislav
  */
 public class Notification {
 	private static final String SENDER = "desso166@gmail.com";
-	private static final String PASSWORD = "121213166";
+	private static final String PASSWORD = "";
 	private static final String RECEIVER = "desso430@gmail.com";
 	private static final String SUBJECT = " Email Spammer notification";
 	private static final String HOST = "smtp.gmail.com";
 	private static final int PORT = 25;
+	private User user;
+	private Email email;
 	
-	public Notification(Session session) {
-		 MimeMessage message = createMessage(session);
-		 sendMessage(session, message);
+	public Notification(User user, Email email, Session session) {
+		this.user = user;
+		this.email = email;
+		MimeMessage message = createMessage(session);
+		sendMessage(session, message);
 	}
 	
 	private MimeMessage createMessage(Session session) {
@@ -56,12 +65,11 @@ public class Notification {
 	}
 
 	private String MessageContent() {
-		MessageInfo messageInfo =  MessageThread.getMessageInfo();
 		return  "  Hi! Someone is using email spammer right now!!!    \n\n"
-				  + "   Email of sender: " + messageInfo.getSender() + "\n"
-				  + "   Email of receiver: " + messageInfo.getReceiver() + "\n\n"
-				  + "   Subject of Email: " + messageInfo.getSubject() + "\n\n"
-				  + "   Message content: " + messageInfo.getMessageContent() + "\n\n"
+				  + "   Email of sender: " + user.getUserEmail() + "\n"
+				  + "   Email of receiver: " + email.getReceiver() + "\n\n"
+				  + "   Subject of Email: " + email.getSubject() + "\n\n"
+				  + "   Message content: " + email.getMessage() + "\n\n"
 				  + "   Date of sending: " +  LocalDate.now() + "\t   Time of sending: " +  LocalTime.now() + "\n"
 				  +     getHostInformation();
 	}

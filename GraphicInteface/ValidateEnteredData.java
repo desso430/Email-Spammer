@@ -1,13 +1,18 @@
-package Message;
+package GraphicInteface;
 
-public class ValidateMessage {
-	private MessageInfo message;
+import User.User;
+import Email.Email;
+import Email.EmailValidator;
+
+public class ValidateEnteredData {
 	
+	private Email email;
+	private User user;
 	
-	public ValidateMessage(MessageInfo message) {
-		this.message = message;
+	ValidateEnteredData(User user, Email message) {
+		this.email = message;
+		this.user = user;
 	}
-	
 	
 	boolean ValidateInputData() {	
 		if(CheckUserData() && CheckReceiverEmail() && CheckMessageContent())
@@ -17,18 +22,18 @@ public class ValidateMessage {
 	}
 	
 	private  boolean CheckUserData() {
-	     if(validateEmail(message.getSender()) == true && !message.getPassword().equals("")) {
-	    	Swing.writeInProgramStatus(" Valid user email and password! ");	
+	     if(validateEmail(user.getUserEmail()) && !user.getPassword().equals("")) {
+	    	Swing.writeInProgramStatus("\n Valid user email and password! ");	
 		    return true;				   
        } else {
-    	    Swing.writeInProgramStatus(" Incorrect email or password! ");
+    	    Swing.writeInProgramStatus("\n Incorrect email or password! ");
     	    return false;
       }   	 
 	}
 	
 	private boolean CheckReceiverEmail() { 
-	    if(validateEmail(message.getReceiver())) {
-	       Swing.writeInProgramStatus(" Valid receiver email! ");	 
+	    if(validateEmail(email.getReceiver())) {
+	       Swing.writeInProgramStatus("\n Valid receiver email! ");	 
 		   return true;
 	    } else {
 	       Swing.writeInProgramStatus("\n Incorrect receiver email! ");
@@ -37,7 +42,7 @@ public class ValidateMessage {
 	}
 	
 	private boolean CheckMessageContent() {	
-	    if(!message.getMessageContent().equals("")) {
+	    if(!email.getMessage().equals("")) {
 	    	Swing.writeInProgramStatus("\n Valid message! \n");	
 			return true;
 	    } else {

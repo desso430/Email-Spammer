@@ -1,4 +1,4 @@
-package Message;
+package GraphicInteface;
 
 import javax.swing.*;
 
@@ -6,9 +6,11 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
-
 import javax.swing.border.EmptyBorder;
+
+import Email.Email;
+import Timer.ProgramTimer;
+import User.User;
 
 @SuppressWarnings("restriction")
 public class Swing extends JFrame {
@@ -136,13 +138,14 @@ public class Swing extends JFrame {
 		// add behaviour
 		StartButton.addActionListener(new ActionListener() {
 			
-			@Override
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-				if(AreTextFieldsEmpty()) {
-				programStatusArea.append(" Program is started! \n Please wait a few seconds....!!!");
-				MessageInfo message = createMessage();
-				if(new ValidateMessage(message).ValidateInputData())
-				  new ProgramTimer((int)spinnerTime.getValue(),message).startTimer(); 
+				if(AreTextFieldsEmpty() && !ProgramTimer.isTimerStarted()) {
+				programStatusArea.append("\n Program is started! \n Please wait a few seconds....!!!");
+				Email message = createMessage();
+				User user = new User(senderField.getText(), passwordField.getText());
+				if(new ValidateEnteredData(user, message).ValidateInputData())
+				  new ProgramTimer(user, message, (int)spinnerTime.getValue()).startTimer(); 
 			  }
 			}
 	   });
@@ -150,11 +153,12 @@ public class Swing extends JFrame {
 	
 	@SuppressWarnings("deprecation")
 	private boolean AreTextFieldsEmpty() {
-		return !senderField.getText().equals("") && !passwordField.getText().equals("") && !receiverField.getText().equals("") && !messageArea.getText().equals("");
+		return !senderField.getText().equals("") && !passwordField.getText().equals("") 
+				&& !receiverField.getText().equals("") && !messageArea.getText().equals("");
 	}
 	
 	private void setStopButton() {
-		StopButton.setToolTipText("Stop sending emails...");
+		StopButton.setToolTipText(" Stop sending emails...");
 		StopButton.setBounds(335, 494, 107, 23);
 		panel.add(StopButton);
 		
@@ -168,14 +172,12 @@ public class Swing extends JFrame {
 		});
 	}
 	
-	static void writeInProgramStatus(String log) {
-		programStatusArea.append("\n " + log);
+	public static void writeInProgramStatus(String log) {
+		programStatusArea.append(log);
 	}
-	
-	@SuppressWarnings("deprecation")
-	private MessageInfo createMessage() {
-	   return new MessageInfo(senderField.getText(), passwordField.getText(), receiverField.getText(),
-			   subjectField.getText(), messageArea.getText());
+
+	private Email createMessage() {
+	   return new Email(receiverField.getText(), subjectField.getText(), messageArea.getText());
 	}
 
 }

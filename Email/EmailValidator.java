@@ -1,4 +1,4 @@
-package Message;
+package Email;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
